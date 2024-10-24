@@ -23,20 +23,26 @@ export function initUpload(options:options):any {
         }
     }
     options.chunkSize?options.chunkSize = blockSize:options.chunkSize = blockSize
+    //限制文件类型
+    let accepts;
+    if (options.accept){
+        accepts = options.accept.map(item => `.${item}`).join(', ');
+    }
+    console.log("accepts",accepts)
     // 初始化配置
     const fileOptions = {
         // 根据文件片段大小决定上传目标URL
         target(file:File, chunk:number) {
             return options.url
         },
-        // 当未设置片段大小或片段大小小于等于0时，禁止上传多个文件
-        singleFile: options.singleFile!=undefined?options.singleFile:false,
+        // 单文件上传
+        singleFile: options.singleFile?options.singleFile:true,
         // 设置文件片段大小
         chunkSize: options.chunkSize,
         // 强制设置文件片段大小，此处设置为false
         forceChunkSize: false,
         // 同时上传的文件片段数量  simultaneousUploads为空则默认3
-        simultaneousUploads: options.simultaneousUploads? options.simultaneousUploads : 13,
+        simultaneousUploads: options.simultaneousUploads? options.simultaneousUploads : 4,
         // 文件参数名
         fileParameterName: 'file',
         // 上传查询参数，此处为空
@@ -71,11 +77,20 @@ export function initUpload(options:options):any {
         permanentErrors: [404, 415, 500, 501],
         // 上传初始状态是否暂停
         initialPaused: false,
+        //withCredentials
+        withCredentials: options.withCredentials?options.withCredentials:false,
     }
     // 实例化上传对象
     uploader = new utils(fileOptions)
     // 绑定上传DOM
-    uploader.assignBrowse(document.getElementById(options.bindUploadDOMById))
+    uploader.assignBrowse(
+        document.getElementById(options.bindUploadDOMById),
+        false,
+        options.singleFile?options.singleFile:true,
+        {
+            accept: accepts?accepts:"*",
+        }
+    )
     uploader.assignDrop(document.getElementById(options.bindUploadDOMById))
     // 添加文件监听
     uploader.on('filesAdded', options.filesAdded? options.filesAdded : filesAdded)
