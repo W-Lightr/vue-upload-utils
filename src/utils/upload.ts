@@ -28,7 +28,6 @@ export function initUpload(options:options):any {
     if (options.accept){
         accepts = options.accept.map(item => `.${item}`).join(', ');
     }
-    console.log("accepts",accepts)
     // 初始化配置
     const fileOptions = {
         // 根据文件片段大小决定上传目标URL

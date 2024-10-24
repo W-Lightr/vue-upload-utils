@@ -6,7 +6,7 @@ export interface options {
     singleFile?: boolean, // 是否上传多个文件
     chunkSize?: number, // 分块大小
     withCredentials?: boolean, // 分块大小
-    accept?: string[], // 限制文件类型 ".jpg,.png"
+    accept?: string[], // 限制文件类型 ['jpg','png']
     simultaneousUploads?:number, // 同时上传的文件片段数量
     checkChunkUploaded?: Function, // 检查文件片段是否已上传
     maxChunkRetries?: number, // 最大重试次数
