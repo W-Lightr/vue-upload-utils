@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import TemplateComponent from '../src/index'
 import App from './App.vue'
+import '../src/style.css'
 
-import 'virtual:uno.css'
 
 console.warn('Vue version:', Vue.version)
 Vue.config.productionTip = false
