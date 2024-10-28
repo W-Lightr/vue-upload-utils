@@ -167,7 +167,7 @@ export const uploadUtils = {
     // 文件切片方法，兼容不同浏览器 File.prototype.mozSlice || File.prototype.webkitSlice
     const blobSlice = File.prototype.slice
     const file1 = file
-    const chunkSize = 1024 * 1024 * 10 // 每个切片的大小
+    const chunkSize = 1024 * 1024 * 5 // 每个切片的大小
     const chunks = Math.ceil(file1.size / chunkSize) // 需要切分的切片数
     let currentChunk = 0 // 当前处理的切片编号
     const spark = new sparkMD5.ArrayBuffer() // MD5计算工具实例

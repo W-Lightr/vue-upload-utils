@@ -2,7 +2,7 @@
   <div class="p-4">
     <!-- Upload Section -->
     <div class="flex items-center space-x-2">
-      <button :id="option.bindUploadDOMById?option.bindUploadDOMById:'uploader'" class="flex items-center px-4 py-2 border rounded-lg text-blue-500 border-blue-500">
+      <button :id="option.bindUploadDOMById" class="flex items-center px-4 py-2 border rounded-lg text-blue-500 border-blue-500">
         <svg t="1717124984850" class="icon size-5 mr-1 fill-blue-500" viewBox="0 0 1024 1024" version="1.1"
              xmlns="http://www.w3.org/2000/svg" p-id="5290" width="200" height="200">
           <path
@@ -54,6 +54,12 @@ const props = defineProps({
     }
   }
 })
+if (!props.option.bindUploadDOMById){
+  props.option.bindUploadDOMById = 'uploader'
+}
+if (!props.option.mergeUrl){
+  props.option.mergeUrl = '/file/merge'
+}
 watch(() => props.option.taskFileList.length, (newValue, oldValue) => {
   if (props.autoUpload) {
     uploadAllSubmit();

@@ -12,16 +12,29 @@ export let optionsArg:options
 export function initUpload(options:options):any {
     optionsArg = options
     //一些条件
-    if (!optionsArg.url){
-        console.error('请设置上传接口 url')
+    if (!optionsArg.baseUrl){
+        console.error('请设置接口地址')
         return
     }
+    //合并地址
     if (!optionsArg.doMerge){
         if (!optionsArg.mergeUrl){
-            console.error('请设置合并文件接口 mergeUrl 或者提供doMerge函数')
-            return
+            optionsArg.mergeUrl=optionsArg.baseUrl + '/file/merge'
+        }else {
+            optionsArg.mergeUrl=optionsArg.baseUrl + optionsArg.mergeUrl
         }
     }
+    //秒传校验
+    if (optionsArg.secUrl){
+        optionsArg.secUrl = optionsArg.baseUrl+ optionsArg.secUrl
+    }
+    //上传地址
+    if (!optionsArg.uploadUrl){
+        optionsArg.uploadUrl = optionsArg.baseUrl+'/file/chunk-upload'
+    }else{
+        optionsArg.uploadUrl = optionsArg.baseUrl+ optionsArg.uploadUrl
+    }
+
     options.chunkSize?options.chunkSize = blockSize:options.chunkSize = blockSize
     //限制文件类型
     let accepts;
@@ -32,7 +45,7 @@ export function initUpload(options:options):any {
     const fileOptions = {
         // 根据文件片段大小决定上传目标URL
         target(file:File, chunk:number) {
-            return options.url
+            return optionsArg.uploadUrl
         },
         // 单文件上传
         singleFile: options.singleFile?options.singleFile:true,
@@ -41,7 +54,7 @@ export function initUpload(options:options):any {
         // 强制设置文件片段大小，此处设置为false
         forceChunkSize: false,
         // 同时上传的文件片段数量  simultaneousUploads为空则默认3
-        simultaneousUploads: options.simultaneousUploads? options.simultaneousUploads : 4,
+        simultaneousUploads: options.simultaneousUploads? options.simultaneousUploads : 3,
         // 文件参数名
         fileParameterName: 'file',
         // 上传查询参数，此处为空
@@ -58,6 +71,8 @@ export function initUpload(options:options):any {
             let objMessage
             try {
                 objMessage = JSON.parse(message)
+                console.log(chunk)
+                console.log(objMessage)
             }
             catch (e) {
                 // 解析响应消息为JSON，失败时objMessage保持为空对象
@@ -253,6 +268,12 @@ function fileUploaded(rootFile:File, file:any, message:string){
     if (res.code == '200') {
         if (res.data.mergeFlag) {
             doMerge(file)
+        }else {
+            fileListUtils.updateStatus({
+                filename: file.name,
+                status: uploadUtils.fileStatus.FAIL.code,
+                statusText: uploadUtils.fileStatus.FAIL.text,
+            })
         }
     }
     else {
@@ -313,6 +334,11 @@ function doMerge(file:any) {
                 } else {
                     // 请求失败
                     console.error('合并接口调用失败');
+                    fileListUtils.updateStatus({
+                        filename: file.name,
+                        status: uploadUtils.fileStatus.FAIL.code,
+                        statusText: uploadUtils.fileStatus.FAIL.text,
+                    })
                 }
             }
         }
@@ -327,6 +353,15 @@ function doMerge(file:any) {
             totalSize: taskItem.target.size,
         };
         xhr.send(JSON.stringify(data));
+        xhr.onloadend = function () {
+            if (xhr.status != 200) {
+                fileListUtils.updateStatus({
+                    filename: file.name,
+                    status: uploadUtils.fileStatus.FAIL.code,
+                    statusText: uploadUtils.fileStatus.FAIL.text,
+                })
+            }
+        }
 
     }
 
