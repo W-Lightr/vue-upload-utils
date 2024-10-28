@@ -1,5 +1,6 @@
 export interface options {
-    url: string, // 上传地址
+    baseUrl: string, // 服务地址
+    uploadUrl?: string, // 上传地址
     mergeUrl?: string, // 合并地址
     secUrl?: string, // 秒传校验地址
     deleteUrl?: string, //删除文件地址
