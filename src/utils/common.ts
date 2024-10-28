@@ -87,6 +87,10 @@ export const fileListUtils = {
   },
 }
 export const uploadUtils = {
+  //MB转字节
+  translateMBToByte(size: any) {
+    return size * 1024 * 1024
+  },
   translateFileSize(fileSize: any) {
     const KB_STR = 'K'
     const MB_STR = 'M'

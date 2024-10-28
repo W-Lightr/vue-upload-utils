@@ -101,7 +101,6 @@ export function initUpload(options:options):any {
     uploader.on('fileError', options.fileError? options.fileError : uploadError)
     //绑定上传文件列表
     setTaskFileList(options.taskFileList)
-    // console.log("fileList",this.taskFileList)
     return uploader;
 }
 
@@ -120,6 +119,12 @@ function filesAdded(files:Array<any>, fileList:Array<File>, event:Event) {
                 console.error('文件格式不正确，请上传'+optionsArg.accept.join('/')+'格式的文件')
                 return
             }
+        }
+        //判断文件大小是否符合 maxSize没有值就默认最大值
+        if (optionsArg.maxSize && f.size > uploadUtils.translateMBToByte(optionsArg.maxSize)) {
+            console.error('文件大小超过限制，请上传'+uploadUtils.translateFileSize(uploadUtils.translateMBToByte(optionsArg.maxSize))+'以下的文件')
+            alert('文件大小超过限制，请上传'+uploadUtils.translateFileSize(uploadUtils.translateMBToByte(optionsArg.maxSize))+'以下的文件')
+            return
         }
         // id
         const uuid = uploadUtils.generateUUID()
@@ -349,7 +354,7 @@ function uploadProgress(rootFile:File, file:any, chunk:Chunk) {
     }
 }
 function uploadError(rootFile:File, file:any, message:string) {
-    console.log(rootFile.name+'上传失败:'+message)
+    console.error(rootFile.name+'上传失败:'+message)
     fileListUtils.updateStatus({
         filename: file.name,
         status: uploadUtils.fileStatus.FAIL.code,

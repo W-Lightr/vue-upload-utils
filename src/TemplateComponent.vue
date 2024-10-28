@@ -10,6 +10,7 @@ const op :options= {
   bindUploadDOMById: 'uploader', // 绑定上传按钮的DOM元素ID
   taskFileList: fileList, // 上传文件列表
   accept: ['jpg','png','docx','pdf'],
+  // maxSize: 10,
 }
 </script>
 

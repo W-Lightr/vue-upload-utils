@@ -55,7 +55,6 @@ const props = defineProps({
   }
 })
 watch(() => props.option.taskFileList.length, (newValue, oldValue) => {
-  console.log(props.option.taskFileList)
   if (props.autoUpload) {
     uploadAllSubmit();
   }

@@ -5,6 +5,7 @@ export interface options {
     deleteUrl?: string, //删除文件地址
     singleFile?: boolean, // 是否上传多个文件
     chunkSize?: number, // 分块大小
+    maxSize?: number, // 文件限制最大大小
     withCredentials?: boolean, // 分块大小
     accept?: string[], // 限制文件类型 ['jpg','png']
     simultaneousUploads?:number, // 同时上传的文件片段数量
