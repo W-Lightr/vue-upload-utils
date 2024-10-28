@@ -113,6 +113,14 @@ function filesAdded(files:Array<any>, fileList:Array<File>, event:Event) {
             fileListUtils.removeTarget(f.name)
             return
         }
+        //判断文件后缀是否有限制
+        if (optionsArg.accept){
+            const fileSuffix = f.name.split('.').pop()
+            if (!optionsArg.accept.includes(fileSuffix)) {
+                console.error('文件格式不正确，请上传'+optionsArg.accept.join('/')+'格式的文件')
+                return
+            }
+        }
         // id
         const uuid = uploadUtils.generateUUID()
         // 定义数据的结构

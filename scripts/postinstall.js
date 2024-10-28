@@ -3,7 +3,7 @@ const { switchVersion, loadModule } = require('./utils')
 const Vue = loadModule('vue')
 
 if (!Vue || typeof Vue.version !== 'string')
-  console.warn('[vue-demi-sfc-component-template] Vue is not found. Please run "npm install vue" to install.')
+  console.warn('Vue is not found. Please run "npm install vue" to install.')
 
 else if (Vue.version.startsWith('2.7.'))
   switchVersion('2.7')
@@ -15,4 +15,4 @@ else if (Vue.version.startsWith('3.'))
   switchVersion('3')
 
 else
-  console.warn(`[vue-demi-sfc-component-template] Vue version v${Vue.version} is not suppported.`)
+  console.warn(`Vue version v${Vue.version} is not suppported.`)

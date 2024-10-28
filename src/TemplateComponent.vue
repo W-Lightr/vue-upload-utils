@@ -9,6 +9,7 @@ const op :options= {
   secUrl: 'http://127.0.0.1:8080/file/sec-upload', // 秒传校验
   bindUploadDOMById: 'uploader', // 绑定上传按钮的DOM元素ID
   taskFileList: fileList, // 上传文件列表
+  accept: ['jpg','png','docx','pdf'],
 }
 </script>
 

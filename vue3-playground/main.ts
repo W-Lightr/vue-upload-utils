@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import TemplateComponent from '../src/index'
+import {TemplateComponent} from '../src/index'
 import App from './App.vue'
 import '../src/style.css'
 

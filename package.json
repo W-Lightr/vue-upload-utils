@@ -1,18 +1,27 @@
 {
   "name": "vue-upload-utils",
-  "version": "0.0.2",
-  "description": "upload tool",
+  "version": "0.0.1",
+  "description": "一个上传辅助工具",
+  "private": false,
+  "contributors": [
+    {
+      "name": "Lightr",
+      "email": "admin@lightr.cn"
+    }
+  ],
   "author": "Lightr",
   "license": "MIT",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/W-Lightr/vue-upload-utils"
   },
+  "homepage": "https://W-Lightr.github.io/vue-upload-utils/",
   "exports": {
     ".": {
       "require": "./dist/index.cjs.js",
       "import": "./dist/index.es.js"
     },
-    "./dist/style.css": {
+    "./style.css": {
       "require": "./dist/style.css",
       "import": "./dist/style.css"
     }
@@ -37,7 +46,9 @@
     "dev:3": "vue-demi-switch 3 vue3 && pnpm --filter vue3-playground dev",
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.ts,.tsx --fix --ignore-path .gitignore",
     "postinstall": "node scripts/postinstall.js",
-    "release": "bumpp --commit --push --tag && npm publish"
+    "prepublishOnly": "npm run build",
+    "release": "bumpp --commit --push --tag && npm publish",
+    "publish": "npm publish"
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.4.9",
@@ -51,8 +62,7 @@
   "dependencies": {
     "simple-uploader.js": "^0.6.0",
     "spark-md5": "^3.0.2",
-    "vue-demi": "^0.14.10",
-    "vue-upload-utils": "file:.yalc/vue-upload-utils"
+    "vue-demi": "^0.14.10"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.0",
