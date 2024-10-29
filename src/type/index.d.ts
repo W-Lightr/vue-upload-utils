@@ -4,6 +4,7 @@ export interface options {
     mergeUrl?: string, // 合并地址
     secUrl?: string, // 秒传校验地址
     deleteUrl?: string, //删除文件地址
+    deleteFile?: boolean, //是否删除真实文件
     singleFile?: boolean, // 是否上传多个文件
     chunkSize?: number, // 分块大小
     maxSize?: number, // 文件限制最大大小

@@ -1,4 +1,7 @@
 import sparkMD5 from 'spark-md5'
+import {TaskItem} from "../type";
+import {deleteFile} from './upload'
+
 let taskFileList: any[] = []
 export function setTaskFileList(taskList: Array<any>) {
   taskFileList = taskList
@@ -14,8 +17,13 @@ export const fileListUtils = {
   remove: (filename: string) => {
     for (let i = 0; i < taskFileList.length; i++) {
       if (filename === taskFileList[i].filename) {
-        taskFileList[i].target.cancel()
+        let task:TaskItem = taskFileList[i]
+        task.target.cancel()
         taskFileList.splice(i, 1)
+        //调用删除接口
+        if (task.status === uploadUtils.fileStatus.SUCCESS.code){
+          deleteFile(task.fileId,task.realPath)
+        }
         break
       }
     }

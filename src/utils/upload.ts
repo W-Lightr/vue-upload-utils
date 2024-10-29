@@ -34,7 +34,10 @@ export function initUpload(options:options):any {
     }else{
         optionsArg.uploadUrl = optionsArg.baseUrl+ optionsArg.uploadUrl
     }
-
+    //删除地址
+    if (optionsArg.deleteUrl){
+        optionsArg.deleteUrl = optionsArg.baseUrl+ optionsArg.deleteUrl
+    }
     options.chunkSize?options.chunkSize = blockSize:options.chunkSize = blockSize
     //限制文件类型
     let accepts;
@@ -217,7 +220,10 @@ export function uploadSingleSubmit(taskItem:TaskItem) {
                                     filename: f.name,
                                     status: uploadUtils.fileStatus.SUCCESS.code,
                                     statusText: uploadUtils.fileStatus.SUCCESS.text,
+                                    realPath: response.data.data.realPath,
+                                    fileId: response.data.data.fileId,
                                 })
+
                             } else {
                                 // 需要上传
                                 fileListUtils.retry(f.name)
@@ -398,20 +404,23 @@ function uploadError(rootFile:File, file:any, message:string) {
 }
 
 //删除上传文件
-export function deleteFile(fileId:string) {
+export function deleteFile(fileId:string,realPath:string) {
     // 删除文件
     if (optionsArg.deleteUrl) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', optionsArg.deleteUrl, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
         //添加请求参数
         let data = {
-            fileId: fileId
+            fileId: fileId,
+            realPath: realPath,
+            deleteFile: optionsArg.deleteFile
         };
-        // xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
             if (xhr.status == 200) {
                 // 请求成功
-                var response = JSON.parse(xhr.responseText);
+                // let response = JSON.parse(xhr.responseText);
+                // response.data.result ? console.log(fileId+':删除成功') : console.log(fileId+':删除失败');
             }
         }
         // 设置请求发生错误时的回调函数
