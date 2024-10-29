@@ -6,12 +6,13 @@ const fileList:TaskItem = reactive([]);
 const op :options= {
   baseUrl: 'http://127.0.0.1:8080', // 上传地址
   // uploadUrl: '/file/chunk-upload', // 上传文件地址
-  secUrl: '/file/sec-upload', // 秒传地址
-  deleteUrl: '/file/delete', // 秒传地址
-  deleteFile: true, // 秒传地址
-  mergeUrl: '/file/merge', // 合并文件地址
+  // secUrl: '/file/sec-upload', // 秒传地址
+  // deleteUrl: '/file/delete', // 秒传地址
+  // deleteFile: true, // 秒传地址
+  // mergeUrl: '/file/merge', // 合并文件地址
   // bindUploadDOMById: 'uploader', // 绑定上传按钮的DOM元素ID
   taskFileList: fileList, // 上传文件列表
+  singleFile:false
   // accept: ['jpg','png','docx','pdf'],
   // maxSize: 10,
 }
@@ -20,7 +21,7 @@ const op :options= {
 <template>
   <div>
     <div class="template-component">
-      <Uploader :auto-upload="true" :option="op" desc="支持扩展名: .rar .zip .doc .docx .pdf .jpg, 单个文件不超过10Mb。"/>
+      <Uploader :auto-upload="false" :option="op" desc="支持扩展名: .rar .zip .doc .docx .pdf .jpg, 单个文件不超过10Mb。"/>
     </div>
   </div>
 </template>

@@ -1,7 +1,7 @@
 {
   "name": "vue-upload-utils",
-  "version": "0.0.5",
-  "description": "一个上传辅助工具",
+  "version": "0.0.6",
+  "description": "一个上传辅助工具&自定义上传样式",
   "private": false,
   "contributors": [
     {
@@ -14,7 +14,9 @@
   "keywords": [
     "vue",
     "vue-upload",
-    "vue-upload-utils"
+    "vue-upload-utils",
+    "文件上传",
+    "分片上传"
   ],
   "repository": {
     "type": "git",

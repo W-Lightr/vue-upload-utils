@@ -51,7 +51,7 @@ export function initUpload(options:options):any {
             return optionsArg.uploadUrl
         },
         // 单文件上传
-        singleFile: options.singleFile?options.singleFile:true,
+        singleFile: false,
         // 设置文件片段大小
         chunkSize: options.chunkSize,
         // 强制设置文件片段大小，此处设置为false
@@ -74,8 +74,6 @@ export function initUpload(options:options):any {
             let objMessage
             try {
                 objMessage = JSON.parse(message)
-                console.log(chunk)
-                console.log(objMessage)
             }
             catch (e) {
                 // 解析响应消息为JSON，失败时objMessage保持为空对象
@@ -103,7 +101,7 @@ export function initUpload(options:options):any {
     uploader.assignBrowse(
         document.getElementById(options.bindUploadDOMById),
         false,
-        options.singleFile?options.singleFile:true,
+        false,
         {
             accept: accepts?accepts:"*",
         }
