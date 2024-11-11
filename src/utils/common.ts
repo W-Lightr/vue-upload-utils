@@ -18,7 +18,9 @@ export const fileListUtils = {
     for (let i = 0; i < taskFileList.length; i++) {
       if (filename === taskFileList[i].filename) {
         let task:TaskItem = taskFileList[i]
-        task.target.cancel()
+        if (task.target){
+          task.target.cancel()
+        }
         taskFileList.splice(i, 1)
         //调用删除接口
         if (task.status === uploadUtils.fileStatus.SUCCESS.code){
@@ -61,7 +63,9 @@ export const fileListUtils = {
     // 取消上传文件
     for (let i = 0; i < taskFileList.length; i++) {
       if (filename === taskFileList[i].filename) {
-        taskFileList[i].target.cancel()
+        if (taskFileList[i].target){
+          taskFileList[i].target.cancel()
+        }
         taskFileList.splice(i, 1)
         break
       }
