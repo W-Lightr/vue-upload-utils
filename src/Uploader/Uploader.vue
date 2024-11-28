@@ -12,14 +12,14 @@
               d="M544.68 486.91c-14.63-10.97-29.24-14.63-43.87-7.31-3.65 0-7.31 3.65-10.97 7.31L380.17 592.92c-14.62 14.63-14.62 36.56 0 51.18 14.63 14.63 40.21 14.63 54.84 0l43.86-40.21v310.73c0 21.93 18.28 36.55 36.56 36.55 21.93 0 36.55-18.27 36.55-36.55V603.88l43.87 40.21c14.62 14.63 40.21 14.63 54.83 0 14.63-14.62 14.63-36.55 0-51.18l-106-106z m0 0"
               p-id="5292"></path>
         </svg>
-        点击上传
+        <div class="hidden sm:block">点击上传</div>
       </button>
-      <span class="text-zinc-500">{{ desc }}</span>
+      <span class="text-zinc-500 text-ellipsis">{{ desc }}</span>
     </div>
     <div class="mt-4 space-y-2">
-      <div v-for="(item,index) in props.option.taskFileList" :key="index">
-        <FileItem :task-item="item" :index="index"/>
-      </div>
+      <template v-for="(item,index) in props.option.taskFileList" :key="index">
+        <FileItem :task-item="item" :upload="upload" :index="index"/>
+      </template>
       <button @click="handleUploadAllClick" v-show="props.option.taskFileList?.length>0 && !autoUpload"
               class="inline-flex items-center px-3 py-1 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
         上传
@@ -29,11 +29,11 @@
 </template>
 <script setup lang="ts">
 
-import {onMounted, PropType, watch} from "vue-demi";
-import {initUpload, uploadAllSubmit} from '../utils/upload'
+import {onMounted, PropType, ref, watch} from "vue-demi";
+import {Uploader} from '../utils/upload'
 import {options} from '../type'
 import FileItem from "./FileItem.vue";
-//使用watch监听，监听fileList的变化
+
 const props = defineProps({
   desc: {
     type: String,
@@ -54,28 +54,42 @@ const props = defineProps({
     }
   }
 })
+//upload对象
+let upload:Uploader;
+
 if (!props.option.bindUploadDOMById){
   props.option.bindUploadDOMById = 'uploader'
 }
 if (!props.option.mergeUrl){
   props.option.mergeUrl = '/file/merge'
 }
+//使用watch监听，监听fileList的变化
 watch(() => props.option.taskFileList.length, (newValue, oldValue) => {
   if (props.autoUpload) {
-    uploadAllSubmit();
+    this?.upload.uploadAllSubmit();
   }
 }, {immediate: true});
 
 //上传所有文件
 function handleUploadAllClick() {
-  uploadAllSubmit()
+  upload.uploadAllSubmit()
 }
 
 onMounted(() => {
-  const upload = initUpload(props.option)
+  upload = new Uploader()
+  upload.initUpload(props.option)
+  // console.log(upload)
 
 })
 </script>
 <style scoped>
-
+.text-ellipsis {
+  display: -webkit-box;        /* 设置为弹性盒模型 */
+  -webkit-box-orient: vertical; /* 垂直布局 */
+  -webkit-line-clamp: 2;       /* 限制为 3 行 */
+  overflow: hidden;            /* 隐藏超出的内容 */
+  text-overflow: ellipsis;     /* 超出部分显示省略号 */
+  line-height: 1.5;            /* 行高，可以根据需要调整 */
+  max-height: calc(1.5em * 2); /* 确保容器高度限制为 3 行内容 */
+}
 </style>
