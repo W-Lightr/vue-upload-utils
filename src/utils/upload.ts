@@ -2,7 +2,7 @@ import { uploadUtils } from './common'
 import {options,Chunk,TaskItem} from '../type'
 import utils from "simple-uploader.js";
 
-export class Uploader {
+export class UploaderObject{
     private uploader: any;
 
     private options: options;
@@ -56,7 +56,7 @@ export class Uploader {
         if (this.optionsArg.deleteUrl){
             this.optionsArg.deleteUrl = this.optionsArg.baseUrl+ this.optionsArg.deleteUrl
         }
-        options.chunkSize?options.chunkSize = blockSize:options.chunkSize = this.blockSize
+        options.chunkSize?options.chunkSize = this.blockSize:options.chunkSize = this.blockSize
         //限制文件类型
         let accepts;
         if (options.accept){
@@ -135,7 +135,7 @@ export class Uploader {
         this.uploader.on('fileError', options.fileError? options.fileError.bind(this) : this.uploadError.bind(this))
         //绑定上传文件列表
         this.taskFileList = options.taskFileList
-        return uploader;
+        return this.uploader;
     }
 
     private filesAdded(files:Array<any>, fileList:Array<File>, event:Event) {

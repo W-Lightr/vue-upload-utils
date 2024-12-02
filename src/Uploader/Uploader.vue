@@ -30,7 +30,7 @@
 <script setup lang="ts">
 
 import {onMounted, PropType, ref, watch} from "vue-demi";
-import {Uploader} from '../utils/upload'
+import {UploaderObject} from '../utils/upload'
 import {options} from '../type'
 import FileItem from "./FileItem.vue";
 
@@ -55,7 +55,7 @@ const props = defineProps({
   }
 })
 //upload对象
-let upload:Uploader;
+let upload:UploaderObject = new UploaderObject();
 
 if (!props.option.bindUploadDOMById){
   props.option.bindUploadDOMById = 'uploader'
@@ -76,7 +76,6 @@ function handleUploadAllClick() {
 }
 
 onMounted(() => {
-  upload = new Uploader()
   upload.initUpload(props.option)
   // console.log(upload)
 

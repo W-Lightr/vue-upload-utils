@@ -1,6 +1,6 @@
 {
   "name": "vue-upload-utils",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "一个上传辅助工具&自定义上传样式",
   "private": false,
   "contributors": [
