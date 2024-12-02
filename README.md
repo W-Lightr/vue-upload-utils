@@ -62,53 +62,66 @@ const op= {
 ## 自定义组件示例
 
 ```vue
-<script setup>
-import {reactive, onMounted, watch} from "vue";
-import {initUpload, uploadAllSubmit} from "vue-upload-utils";
-
-const fileList = reactive([]);
-const op = {
-  baseUrl: 'http://127.0.0.1:8080', // 上传地址
-  bindUploadDOMById: 'upBtn', // 绑定上传按钮的DOM元素ID
-  taskFileList: fileList, // 上传文件列表
-}
-onMounted(() => {
-  initUpload(op)
-})
-//监听 fileList
-watch(fileList, (newVal, oldVal) => {
-  console.log(newVal)
-})
-
-function uploadFile() {
-  uploadAllSubmit()
-}
-</script>
-
 <template>
-  <div class="bt" id="upBtn">上传文件</div>
-  <br/>
-  <table>
-    <thead>
-    <tr>
-      <th>序号</th>
-      <th>文件名</th>
-      <th>文件大小</th>
-      <th>状态</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(file, index) in fileList" :key="file.id">
-      <td>{{ index }}</td>
-      <td>{{ file.filename }}</td>
-      <td>{{ file.fileSize }}</td>
-      <td>{{ file.statusText }}</td>
-    </tr>
-    </tbody>
-  </table>
-  <button v-show="fileList.length > 0" style="padding: 2px;border: 1px solid #ccc;" @click="uploadFile">开始上传
-  </button>
+  <div>
+    <div class="bt" id="upBtn">上传文件</div>
+    <br />
+    <table>
+      <thead>
+      <tr>
+        <th>序号</th>
+        <th>文件名</th>
+        <th>文件大小</th>
+        <th>状态</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(file, index) in fileList" :key="file.id">
+        <td>{{ index + 1 }}</td>
+        <td>{{ file.filename }}</td>
+        <td>{{ file.fileSize }}</td>
+        <td>{{ file.statusText }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <button v-show="fileList.length > 0" style="padding: 2px; border: 1px solid #ccc;" @click="uploadFile">
+      开始上传
+    </button>
+  </div>
 </template>
+
+<script>
+import { UploaderObject } from 'vue-upload-utils';
+
+export default {
+  data() {
+    return {
+      fileList: [], // 初始化文件列表
+      upload: null
+    };
+  },
+  mounted() {
+    const op = {
+      baseUrl: 'http://127.0.0.1:8080', // 上传地址
+      bindUploadDOMById: 'upBtn', // 绑定上传按钮的DOM元素ID
+      taskFileList: this.fileList // 上传文件列表
+    };
+    // 初始化上传功能
+    this.upload = new UploaderObject()
+    this.upload.initUpload(op);
+
+    // 监听 fileList 的变化
+    this.$watch('fileList', (newVal, oldVal) => {
+      console.log(newVal);
+    });
+  },
+  methods: {
+    uploadFile() {
+      this.upload.uploadAllSubmit();
+    }
+  }
+};
+</script>
 
 <style scoped>
 .bt {
